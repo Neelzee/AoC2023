@@ -5,4 +5,4 @@
 | 1   | Go       | ⭐    |
 | 2   | Nushell  |       |
 | 3   | Haskell  |       |
-| 4   | Go       | ⭐    |
+| 4   | Go       |       |
