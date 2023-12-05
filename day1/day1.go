@@ -26,68 +26,49 @@ func main() {
 		line := scanner.Text()
 		a_1, b_1 := parse_word([]rune(line))
 		a_2, b_2 := get_numbers([]rune(line))
-		fmt.Println(fmt.Sprintf("%v, %v in: %v", a_2, b_2, line))
+		fmt.Printf("%v, %v in: %v\n", a_2, b_2, line)
 		sum_1 += a_1 * 10 + b_1
 		sum_2 += a_2 * 10 + b_2
 	}
-	fmt.Println(fmt.Sprintf("Star 1: %v", sum_1))
-	fmt.Println(fmt.Sprintf("Star 2: %v", sum_2))
+	fmt.Printf("Star 1: %v\n", sum_1)
+	fmt.Printf("Star 2: %v\n", sum_2)
 }
 
 
-func get_numbers(runes []rune) (int, int) {
 
+func get_numbers(runes []rune) (int, int) {
+	string_numbers := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 	a := -1
 	b := -1
 
-	string_numbers := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	for i, r := range runes {
+		if unicode.IsDigit(r) && a == -1 {
+			a = int(r) - 48
+		} else if a == -1 {
+			for j, n := range string_numbers {
+				p := strings.Index(string(runes), n)
 
-	//inc := Max(Map(string_numbers, func(s string) int { return len(s) }))
-
-	// Find first valid number
-	for i := 0; i < len(runes); i++ {
-		// Check if any of the runes are digits
-		if unicode.IsDigit(runes[i]) && a == -1 {
-			a = int(runes[i]) - 48
-		}
-			
-
-		// If we are here, the first runes are not digits, so might be a number
-		if a == -1 {
-			for j, s := range string_numbers {
-				if len(s) < i {
-					continue
-				}
-
-				pos := strings.Index(string(runes[:i]), s)
-
-				if pos != -1 {
+				if p != -1 {
 					a = j + 1
 					break
 				}
 			}
 		}
 
-		// Check if any of the runes are digits
-		if unicode.IsDigit(runes[len(runes) - i - 1]) && b == -1 {
-			b = int(runes[len(runes) - i - 1]) - 48
-		}
-			
+		ind := len(runes) - 1 - i
+		l := runes[ind]
 
-		// If we are here, the first runes are not digits, so might be a number
-		if b == -1 {
-			for j, s := range string_numbers {
-				pos := strings.Index(string(runes[i:]), s)
+		if unicode.IsDigit(l) && b == -1 {
+			b = int(l) - 48
+		} else if b == -1 {
+			for j, n := range string_numbers {
+				p := strings.Index(string(runes[ind:]), n)
 
-				if pos != -1 {
+				if p != -1 {
 					b = j + 1
 					break
 				}
 			}
-		}
-
-		if a != -1 && b != -1 {
-			return a, b
 		}
 	}
 
