@@ -46,7 +46,7 @@ func get_numbers(runes []rune) (int, int) {
 			a = int(r) - 48
 		} else if a == -1 {
 			for j, n := range string_numbers {
-				p := strings.Index(string(runes[0:i]), n)
+				p := strings.Index(string(runes[0:i + 1]), n)
 
 				if p != -1 {
 					a = j + 1
