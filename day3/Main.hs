@@ -52,15 +52,15 @@ numDigits :: Int -> Int
 numDigits = length . show
 
 isNextTo :: Digs -> Obst -> Bool
-isNextTo (Digs num x1 y1) (Obst x2 y2) =
-    horizontalAdjacent || verticalAdjacent || diagonalAdjacent
+isNextTo (Digs num x1 y1) (Obst x2 y2) = any (\p -> areAdjacent p (x2, y2)) [(x, y1) | x <- [x1..xn]]
   where
-    numD = numDigits num
-    xEnd = x1 + numD - 1 -- The x-coordinate of the last digit in Digs
-    horizontalAdjacent = any (\x -> x == x2 && abs (y1 - y2) == 1) [x1..xEnd]
-    verticalAdjacent = any (\x -> abs (x - x2) == 1 && y1 == y2) [x1..xEnd]
-    diagonalAdjacent = any (\x -> abs (x - x2) == 1 && abs (y1 - y2) == 1) [x1..xEnd]
+    xn = x1 + numDigits num - 1
 
+areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
+areAdjacent (x1, y1) (x2, y2) = 
+    let xDiff = abs (x1 - x2)
+        yDiff = abs (y1 - y2)
+    in (xDiff <= 1 && yDiff <= 1)
 
 
 isNextToAny :: Digs -> [Obst] -> Bool
@@ -69,6 +69,7 @@ isNextToAny d = any (isNextTo d)
 findAdjacentDigs :: [String] -> [Digs]
 findAdjacentDigs xs = calc xs 0
   where
+    calc :: [String] -> Int -> [Digs]
     calc [] _ = []
     calc [_] _ = []
     calc (l1:l2:ls) y =
